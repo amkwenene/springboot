@@ -67,4 +67,52 @@ public class BookingBusinessLogic {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(restResponse);
         }
     }
+    public ResponseEntity<?> updateBookings(Bookings bookings){
+        try{
+            Optional<Bookings> ById=bookingsRepository.findById(bookings.getId());
+            if (ById.isPresent()){
+                ById.get().setId(bookings.getId());
+                ById.get().setName(bookings.getName());
+                ById.get().setSurname(bookings.getSurname());
+                ById.get().setAddress(bookings.getAddress());
+                ById.get().setPhoneNumber(bookings.getPhoneNumber());
+                ById.get().setDate(bookings.getDate());
+                bookingsRepository.save(ById.get());
+
+                RestResponse restResponse= new RestResponse();
+                restResponse.setStatus("200");
+                restResponse.setMessage("Bookings updated successfully");
+                return ResponseEntity.status(HttpStatus.OK).body(restResponse);
+
+            }else {
+                RestResponse restResponse= new RestResponse();
+                restResponse.setStatus("201");
+                restResponse.setMessage("Failed  updated bookings");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(restResponse);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            RestResponse restResponse= new RestResponse();
+            restResponse.setStatus("400");
+            restResponse.setMessage("Error Occurred while updating bookings");
+            return ResponseEntity.status(HttpStatus.OK).body(restResponse);
+        }
+    }
+    public ResponseEntity<?> deleteBookings(String id){
+        try{
+            bookingsRepository.deleteById(id);
+            RestResponse restResponse= new RestResponse();
+            restResponse.setStatus("200");
+            restResponse.setMessage("Bookings deleted successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(restResponse);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            RestResponse restResponse= new RestResponse();
+            restResponse.setStatus("400");
+            restResponse.setMessage("Error Occurred while deleting bookings");
+            return ResponseEntity.status(HttpStatus.OK).body(restResponse);
+        }
+    }
 }

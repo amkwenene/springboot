@@ -23,5 +23,15 @@ public class BookingController {
     public ResponseEntity<?> GetBookingsById(@PathVariable String id){
         return  bookingBusinessLogic.GetBookingsById(id);
     }
+    @PutMapping("update/bookings")
+    public ResponseEntity<?> updateBookings(@RequestBody Bookings bookings){
+        return bookingBusinessLogic.updateBookings(bookings);
+    }
+    @DeleteMapping("delete/bookings/{id}")
+    public ResponseEntity<?> deleteBookings(@PathVariable String id){
+        return bookingBusinessLogic.deleteBookings(id);
+    }
+
+
 
 }
